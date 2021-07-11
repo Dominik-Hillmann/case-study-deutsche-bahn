@@ -17,7 +17,7 @@ import com.opencsv.CSVParserBuilder;
 
 public class OperationSitesAdministrator {
 	private CSVReader reader;
-	private final String OPERATION_SITES_DATA_PATH = ".\\src\\main\\resources\\static\\operation-sites-data.csv";
+	private final String OPERATION_SITES_DATA_PATH = "./src/main/resources/static/operation-sites-data.csv";
 	
 	/* private */ public List<String[]> rawSites;
 	
