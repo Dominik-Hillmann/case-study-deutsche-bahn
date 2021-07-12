@@ -37,4 +37,28 @@ public class OperationSite {
 	public String getType() {
 		return type;
 	}
+	
+	@Override
+	public boolean equals(Object other) {
+		OperationSite otherSite;
+		try {
+			otherSite = (OperationSite) other;
+		} catch (ClassCastException e) {
+			return false;
+		}
+		
+		return getSiteCode().equals(otherSite.getSiteCode()) &&
+			getName().equals(otherSite.getName()) &&
+			getShortName().equals(otherSite.getShortName()) &&
+			getType().equals(otherSite.getType());
+	}
+	
+	@Override
+	public String toString() {
+		return "Operation site: " +
+			getSiteCode() + ", " +
+			getName() + ", " +
+			getShortName() + ", " +
+			getType();
+	}
 }

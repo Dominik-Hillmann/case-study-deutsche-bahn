@@ -1,10 +1,8 @@
 package com.bahn.casestudy.operationsite;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.opencsv.CSVReader;
@@ -17,14 +15,15 @@ import com.opencsv.CSVParserBuilder;
 
 public class OperationSitesAdministrator {
 	private CSVReader reader;
-	private final String OPERATION_SITES_DATA_PATH = "./src/main/resources/static/operation-sites-data.csv";
+	private final String OPERATION_SITES_DATA_DIR = "./src/main/resources/static/";
+	private final static String FALLBACK_DATA = "operation-sites-data.csv";
 	
 	/* private */ public List<String[]> rawSites;
 	
-	public OperationSitesAdministrator() throws IOException {
+	public OperationSitesAdministrator(String dataFileName) throws IOException {
 		rawSites = new ArrayList<String[]>();
 		
-		FileReader fileReader = new FileReader(OPERATION_SITES_DATA_PATH);
+		FileReader fileReader = new FileReader(OPERATION_SITES_DATA_DIR + dataFileName);
 		
 		CSVReaderBuilder builder = new CSVReaderBuilder(fileReader)
 		    .withCSVParser(new CSVParserBuilder()
@@ -44,6 +43,10 @@ public class OperationSitesAdministrator {
 		} catch (CsvValidationException | IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public OperationSitesAdministrator() throws IOException {
+		this(FALLBACK_DATA);
 	}
 	
 	public OperationSite getOperationSite(String abbr) throws OperationSiteNotFoundException {
