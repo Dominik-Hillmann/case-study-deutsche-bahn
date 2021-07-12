@@ -8,8 +8,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.bahn.casestudy.help.CannotReadCsvException;
+import com.bahn.casestudy.help.OperationSiteNotFoundException;
 import com.bahn.casestudy.operationsite.OperationSite;
-import com.bahn.casestudy.operationsite.OperationSiteNotFoundException;
 import com.bahn.casestudy.operationsite.OperationSitesAdministrator;
 
 @SpringBootTest
@@ -24,19 +25,19 @@ public class OperationSiteAdministratorTests {
 	
 	@BeforeAll
 	public static void setupAdministrator() throws IOException {
-		admin = new OperationSitesAdministrator("operation-sites-test-data.csv");
+		admin = OperationSitesAdministrator.getInstance();
 	}
 		
 	@Test
 	@DisplayName("Correct abbrevation")
-	public void operationSiteOnCorrectAbbreveation() throws OperationSiteNotFoundException {
+	public void operationSiteOnCorrectAbbreveation() throws OperationSiteNotFoundException, CannotReadCsvException {
 		OperationSite actual = admin.getOperationSite("aamp");		
 		Assertions.assertEquals(actual, aampSite);
 	}
 		
 	@Test
 	@DisplayName("Case insensitive")
-	public void operationSiteAbbrevationCaseInsensitive() throws OperationSiteNotFoundException {
+	public void operationSiteAbbrevationCaseInsensitive() throws OperationSiteNotFoundException, CannotReadCsvException {
 		OperationSite actual = admin.getOperationSite("aAmP");
 		Assertions.assertEquals(actual, aampSite);
 	}

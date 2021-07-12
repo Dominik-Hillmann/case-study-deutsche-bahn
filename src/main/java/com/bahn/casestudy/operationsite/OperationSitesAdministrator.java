@@ -8,48 +8,53 @@ import java.util.List;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
+import com.bahn.casestudy.help.CannotReadCsvException;
+import com.bahn.casestudy.help.OperationSiteNotFoundException;
 import com.opencsv.CSVParserBuilder;
 
-/***** WICHTIG ZUM SINGLETON MACHEN *****/
-// https://javabeginners.de/Design_Patterns/Singleton_-Pattern.php
-
+/**
+ * Singleton pattern
+ *
+ */
 public class OperationSitesAdministrator {
-	private CSVReader reader;
-	private final String OPERATION_SITES_DATA_DIR = "./src/main/resources/static/";
-	private final static String FALLBACK_DATA = "operation-sites-data.csv";
+	private final String OPERATION_SITES_DATA= "./src/main/resources/static/operation-sites-data.csv";	
+	private static final OperationSitesAdministrator SINGLETON = new OperationSitesAdministrator();
 	
-	/* private */ public List<String[]> rawSites;
+	private List<String[]> rawSites;
 	
-	public OperationSitesAdministrator(String dataFileName) throws IOException {
+	private String reasonDataNotRead = null;
+	
+	private OperationSitesAdministrator() {
 		rawSites = new ArrayList<String[]>();
 		
-		FileReader fileReader = new FileReader(OPERATION_SITES_DATA_DIR + dataFileName);
-		
-		CSVReaderBuilder builder = new CSVReaderBuilder(fileReader)
-		    .withCSVParser(new CSVParserBuilder()
-	    		.withSeparator(';')
-	    		.build())
-		    .withSkipLines(1);
-		
-		reader = builder.build();
-		
-		String[] nextLine;
 		try {
+			FileReader fileReader = new FileReader(OPERATION_SITES_DATA);
+			
+			CSVReaderBuilder builder = new CSVReaderBuilder(fileReader)
+			    .withCSVParser(new CSVParserBuilder().withSeparator(';').build())
+			    .withSkipLines(1);			
+			CSVReader reader = builder.build();
+			
+			String[] nextLine;
 			while ((nextLine = reader.readNext()) != null) {
 				if (nextLine != null) {
 					rawSites.add(nextLine);
 				}
 			}
 		} catch (CsvValidationException | IOException e) {
-			e.printStackTrace();
+			reasonDataNotRead = e.getMessage();
 		}
 	}
 	
-	public OperationSitesAdministrator() throws IOException {
-		this(FALLBACK_DATA);
-	}
 	
-	public OperationSite getOperationSite(String abbr) throws OperationSiteNotFoundException {
+	public OperationSite getOperationSite(String abbr) throws OperationSiteNotFoundException, CannotReadCsvException {
+		// The exception gets thrown here because I want the message to be displayed
+		// over the API.
+		if (reasonDataNotRead != null) {
+			throw new CannotReadCsvException(reasonDataNotRead);
+		}
+		
+		
 		String searchCode = abbr.toLowerCase();
 		
 		String siteCode;
@@ -73,5 +78,10 @@ public class OperationSitesAdministrator {
 			abbr + 
 			"."
 		);
+	}
+	
+	
+	public static OperationSitesAdministrator getInstance() {
+		return SINGLETON;
 	}
 }

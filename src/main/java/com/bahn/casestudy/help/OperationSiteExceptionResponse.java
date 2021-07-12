@@ -1,4 +1,4 @@
-package com.bahn.casestudy.operationsite;
+package com.bahn.casestudy.help;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
