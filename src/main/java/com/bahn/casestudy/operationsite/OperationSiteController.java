@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bahn.casestudy.download.CallCounter;
 import com.bahn.casestudy.help.CannotReadCsvException;
 import com.bahn.casestudy.help.OperationSiteNotFoundException;
 
@@ -27,9 +28,22 @@ public class OperationSiteController {
 		OperationSiteNotFoundException,
 		CannotReadCsvException {
 		
+		CallCounter.getInstance().callOccured();
 		return new ResponseEntity<OperationSite>(
 			service.getOperationSite(abbr), 
 			HttpStatus.OK
 		);
+		
 	}
+	
+	@GetMapping(path = "/test", produces = "application/json")
+	public @ResponseBody ResponseEntity<CallCounter> getCount() {
+		
+		return new ResponseEntity<CallCounter>(
+			CallCounter.getInstance(),
+			HttpStatus.OK
+		);
+		
+	}
+
 }
