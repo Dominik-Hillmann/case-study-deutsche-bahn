@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @SpringBootTest
@@ -28,6 +29,7 @@ public class OperationSiteControllerTest {
 	}	
 	
 	@Test
+	@DisplayName("Increments counter on call.")
 	public void incrementCounterOnCall() throws CannotReadCsvException, OperationSiteNotFoundException {
 		Assertions.assertEquals(0, counter.getCount());
 		controller.getAbbr("aamp");

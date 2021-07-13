@@ -4,6 +4,7 @@ public class CallCounter {
 	
 	private static final CallCounter SINGLETON = new CallCounter();
 	private int count;
+	private final int CHECK_RATE = 20;
 	
 	
 	private CallCounter() {
@@ -15,11 +16,18 @@ public class CallCounter {
 		count++;
 	}
 	
+	
 	public int getCount() {
 		return count;
 	}
 	
+	
 	public static CallCounter getInstance() {
 		return SINGLETON;
+	}
+	
+	
+	public boolean counterDivisable() {
+		return count % CHECK_RATE == 0;
 	}
 }

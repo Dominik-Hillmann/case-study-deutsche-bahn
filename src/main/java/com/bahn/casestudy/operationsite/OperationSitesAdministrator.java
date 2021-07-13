@@ -8,6 +8,8 @@ import java.util.List;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
+import com.bahn.casestudy.download.CallCounter;
+import com.bahn.casestudy.download.CsvDownloader;
 import com.bahn.casestudy.help.CannotReadCsvException;
 import com.bahn.casestudy.help.OperationSiteNotFoundException;
 import com.opencsv.CSVParserBuilder;
@@ -47,6 +49,19 @@ public class OperationSitesAdministrator {
 	}
 	
 	
+	private void downloadNewerData() {
+		boolean dataCheckNecessary = CallCounter.getInstance().counterDivisable();
+		if (dataCheckNecessary) {
+			try {
+				CsvDownloader client = new CsvDownloader();
+				client.saveNewestCsv();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	
 	public OperationSite getOperationSite(String abbr) throws OperationSiteNotFoundException, CannotReadCsvException {
 		// The exception gets thrown here because I want the message to be displayed
 		// over the API.
@@ -54,6 +69,7 @@ public class OperationSitesAdministrator {
 			throw new CannotReadCsvException(reasonDataNotRead);
 		}
 		
+		downloadNewerData();
 		
 		String searchCode = abbr.toLowerCase();
 		
