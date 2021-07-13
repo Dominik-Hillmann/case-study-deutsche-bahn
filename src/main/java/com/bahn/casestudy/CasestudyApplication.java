@@ -7,12 +7,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.bahn.casestudy.download.CsvDownloader;
 
+/**
+ * The class that contains the <code>main</code> method.
+ * @author Dominik Hillmann
+ */
 @SpringBootApplication
 public class CasestudyApplication {
-	public static void main(String[] args) throws IOException { //!!!!!!!!!!!!!!!!!!!!!!!!
+	public static void main(String[] args) throws IOException {
 		SpringApplication.run(CasestudyApplication.class, args);
-//		CsvDownloader c = new CsvDownloader();
-//		c.saveNewestCsv();
-//		c.close();
 	}
 }

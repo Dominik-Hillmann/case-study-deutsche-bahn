@@ -10,9 +10,16 @@ import com.bahn.casestudy.help.CannotReadCsvExceptionResponse;
 import com.bahn.casestudy.help.OperationSiteExceptionResponse;
 import com.bahn.casestudy.help.OperationSiteNotFoundException;
 
+/**
+ * Contains responses in case something goes wrong at the {@link OperationSiteController}.
+ */
 @RestControllerAdvice
 public class OperationSiteExceptionHelper {
-	
+	/**
+	 * Handles the case that the abbreviation of an operation site cannot be found.
+	 * @param e The exception thrown.
+	 * @return A well displayed wrapper for the exception.
+	 */
 	@ExceptionHandler(value = {OperationSiteNotFoundException.class})
 	public ResponseEntity<OperationSiteExceptionResponse> handleOperationSiteNotFoundException(OperationSiteNotFoundException e) {
 		return new ResponseEntity<OperationSiteExceptionResponse>(
@@ -21,6 +28,12 @@ public class OperationSiteExceptionHelper {
 		);
 	}
 	
+	
+	/**
+	 * Handles the case that the CSV cannot be read.
+	 * @param e The exception thrown.
+	 * @return A well displayed wrapper for the exception.
+	 */
 	@ExceptionHandler(value = {CannotReadCsvException.class})
 	public ResponseEntity<CannotReadCsvExceptionResponse> handleCannotReadCsvException(CannotReadCsvException e) {
 		return new ResponseEntity<CannotReadCsvExceptionResponse>(
@@ -28,5 +41,4 @@ public class OperationSiteExceptionHelper {
 			HttpStatus.INTERNAL_SERVER_ERROR
 		);
 	}
-	
 }

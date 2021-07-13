@@ -15,17 +15,23 @@ import com.bahn.casestudy.help.OperationSiteNotFoundException;
 import com.opencsv.CSVParserBuilder;
 
 /**
- * Singleton pattern
- *
+ * This class administrates the operation sites data as a singleton.
  */
 public class OperationSitesAdministrator {
+	/** Path to the CSV. */
 	private final String OPERATION_SITES_DATA= "./src/main/resources/static/operation-sites-data.csv";	
+	/** The single instance. */
 	private static final OperationSitesAdministrator SINGLETON = new OperationSitesAdministrator();
 	
+	/** The raw data as read from the CSV. */
 	private List<String[]> rawSites;
 	
+	/** In case an error gets thrown this string cotains the reason why. */
 	private String reasonDataNotRead = null;
 	
+	/**
+	 * Constructor for the single instance.
+	 */
 	private OperationSitesAdministrator() {
 		rawSites = new ArrayList<String[]>();
 		
@@ -49,19 +55,33 @@ public class OperationSitesAdministrator {
 	}
 	
 	
+	/**
+	 * Downloads the newest possible CSV and saves it at {@link OPERATION_SITES_DATA}.
+	 */
 	private void downloadNewerData() {
 		boolean dataCheckNecessary = CallCounter.getInstance().counterDivisable();
+		
+		CsvDownloader client = new CsvDownloader();
+		
 		if (dataCheckNecessary) {
-			try {
-				CsvDownloader client = new CsvDownloader();
+			try { 
 				client.saveNewestCsv();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+				client.close();
 			}
 		}
 	}
 	
 	
+	/**
+	 * Get an operation site by its abbreviation.
+	 * @param abbr The abbreviation.
+	 * @return The operation site data.
+	 * @throws OperationSiteNotFoundException If there is no site using this abbreviation.
+	 * @throws CannotReadCsvException If the CSV cannot be read.
+	 */
 	public OperationSite getOperationSite(String abbr) throws OperationSiteNotFoundException, CannotReadCsvException {
 		// The exception gets thrown here because I want the message to be displayed
 		// over the API.
@@ -97,6 +117,10 @@ public class OperationSitesAdministrator {
 	}
 	
 	
+	/**
+	 * Get the single instance.
+	 * @return The instance.
+	 */
 	public static OperationSitesAdministrator getInstance() {
 		return SINGLETON;
 	}

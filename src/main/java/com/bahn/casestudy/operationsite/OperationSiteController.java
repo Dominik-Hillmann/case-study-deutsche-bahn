@@ -13,37 +13,57 @@ import com.bahn.casestudy.download.CallCounter;
 import com.bahn.casestudy.help.CannotReadCsvException;
 import com.bahn.casestudy.help.OperationSiteNotFoundException;
 
+/**
+ * The controller that servers the wanted endpoint for the operation sites.
+ * Accessed by .../api/betriebsstelle/...
+ */
 @RestController // Makes class serve REST endpoints.
 @RequestMapping(path = "api/betriebsstelle")
 public class OperationSiteController {
+	/** The service which the controller accesses. */
 	private final OperationSiteService service;
 	
+	
+	/**
+	 * The constructor.
+	 * @param service The service which the controller accesses.
+	 */
 	@Autowired // Instanciates services outside and pass it as parameter.
 	public OperationSiteController(OperationSiteService service) {
 		this.service = service;
 	}	
 	
+	
+	/**
+	 * The endpoint that returns operation site information by their code.
+	 * @param abbr The abbreveation by which to search.
+	 * @return The response of the {@link OperationSite}.
+	 * @throws OperationSiteNotFoundException If there is no operation site with this code.
+	 * @throws CannotReadCsvException If the CSV which contains the operation 
+	 * site cannot be read.
+	 */
 	@GetMapping(path = "/{abbr}", produces = "application/json")
 	public @ResponseBody ResponseEntity<OperationSite> getAbbr(@PathVariable String abbr) throws 
 		OperationSiteNotFoundException,
 		CannotReadCsvException {
-		
 		CallCounter.getInstance().callOccured();
+		
 		return new ResponseEntity<OperationSite>(
 			service.getOperationSite(abbr), 
 			HttpStatus.OK
 		);
-		
 	}
 	
+	
+	/**
+	 * Debugging endpoint.
+	 * @return Number of times the other endpoint got accessed.
+	 */
 	@GetMapping(path = "/test", produces = "application/json")
-	public @ResponseBody ResponseEntity<CallCounter> getCount() {
-		
+	public @ResponseBody ResponseEntity<CallCounter> getCount() {		
 		return new ResponseEntity<CallCounter>(
 			CallCounter.getInstance(),
 			HttpStatus.OK
-		);
-		
+		);	
 	}
-
 }
