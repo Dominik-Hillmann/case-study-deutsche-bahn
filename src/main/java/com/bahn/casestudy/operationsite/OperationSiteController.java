@@ -16,6 +16,8 @@ import com.bahn.casestudy.help.OperationSiteNotFoundException;
 /**
  * The controller that servers the wanted endpoint for the operation sites.
  * Accessed by .../api/betriebsstelle/...
+ * 
+ * @implNote More controllers in case of different /api/...
  */
 @RestController // Makes class serve REST endpoints.
 @RequestMapping(path = "api/betriebsstelle")
@@ -50,6 +52,31 @@ public class OperationSiteController {
 		
 		return new ResponseEntity<OperationSite>(
 			service.getOperationSite(abbr), 
+			HttpStatus.OK
+		);
+	}
+	
+	/**
+	 * Endpoint in case no abbreviation but a slash is given.
+	 * @return Error message.
+	 */
+	@GetMapping(path = "/", produces = "application/json")
+	public @ResponseBody ResponseEntity<PossibleOperationSiteCodes> noCodeWithSlash() {
+		return new ResponseEntity<PossibleOperationSiteCodes>(
+			service.getPossibleOperationSiteCodes(),
+			HttpStatus.OK
+		);
+	}
+	
+	
+	/**
+	 * Endpoint in case no abbreviation but is given.
+	 * @return Error message.
+	 */
+	@GetMapping(path = "", produces = "application/json")
+	public @ResponseBody ResponseEntity<PossibleOperationSiteCodes> noCode() {
+		return new ResponseEntity<PossibleOperationSiteCodes>(
+			service.getPossibleOperationSiteCodes(),
 			HttpStatus.OK
 		);
 	}

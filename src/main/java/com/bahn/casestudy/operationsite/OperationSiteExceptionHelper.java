@@ -24,7 +24,7 @@ public class OperationSiteExceptionHelper {
 	public ResponseEntity<OperationSiteExceptionResponse> handleOperationSiteNotFoundException(OperationSiteNotFoundException e) {
 		return new ResponseEntity<OperationSiteExceptionResponse>(
 			new OperationSiteExceptionResponse(e),
-			HttpStatus.INTERNAL_SERVER_ERROR
+			HttpStatus.NOT_FOUND
 		);
 	}
 	

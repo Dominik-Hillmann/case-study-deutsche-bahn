@@ -124,4 +124,12 @@ public class OperationSitesAdministrator {
 	public static OperationSitesAdministrator getInstance() {
 		return SINGLETON;
 	}
+	
+	
+	public List<String> getOperationSiteCodes() {
+		List<String> codes = new ArrayList<String>();
+		rawSites.forEach(rawSite -> codes.add(rawSite[1]));
+		
+		return codes;
+	}
 }

@@ -27,7 +27,12 @@ public class OperationSiteService {
 	 * @throws OperationSiteNotFoundException If there is no site using this abbreviation.
 	 * @throws CannotReadCsvException If the CSV cannot be read.
 	 */
-	public OperationSite getOperationSite(String abbr) throws OperationSiteNotFoundException, CannotReadCsvException {
+	public OperationSite getOperationSite(String abbr) throws OperationSiteNotFoundException, CannotReadCsvException {		
 		return admin.getOperationSite(abbr);
+	}
+	
+	
+	public PossibleOperationSiteCodes getPossibleOperationSiteCodes() {
+		return new PossibleOperationSiteCodes(admin.getOperationSiteCodes());
 	}
 }
