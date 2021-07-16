@@ -30,7 +30,7 @@ public class OperationSiteController {
 	 * The constructor.
 	 * @param service The service which the controller accesses.
 	 */
-	@Autowired // Instanciates services outside and pass it as parameter.
+	@Autowired // Instantiates services outside and pass it as parameter.
 	public OperationSiteController(OperationSiteService service) {
 		this.service = service;
 	}	

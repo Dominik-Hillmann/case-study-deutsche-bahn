@@ -1,5 +1,5 @@
 FROM adoptopenjdk/maven-openjdk11
-LABEL author Dominik Hillmann
+LABEL author="Dominik Hillmann"
 
 WORKDIR /app/
 COPY . .

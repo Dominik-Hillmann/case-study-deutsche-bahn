@@ -35,3 +35,28 @@ Will return a JSON with the field `Nachricht` indicating what went wrong:
   "Nachricht": "Data does not contain operation site with RL100-Code foofoo."
 }
 ```
+If you do not provide an operation site code, the web API will suggest possible codes you can use:
+```shell
+curl --request GET --url http://localhost:8080/api/betriebsstelle
+```
+
+The returned JSON will look like this:
+```json
+{
+  "Moegliche Betriebsstellencodes": [
+    "SGRB",
+    "SGRG",
+    "SGRL",
+    "SGRO",
+    "SGS",
+    "SGSZ",
+    "SGU",
+    "SGW",
+    "SHAM",
+    "SHAU",
+    "SHB",
+    "SHBG",
+    // ...
+  ]
+}
+```

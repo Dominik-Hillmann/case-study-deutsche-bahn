@@ -26,29 +26,37 @@ public class OperationSitesAdministrator {
 	/** The raw data as read from the CSV. */
 	private List<String[]> rawSites;
 	
-	/** In case an error gets thrown this string cotains the reason why. */
+	/** In case an error gets thrown this string contains the reason why. */
 	private String reasonDataNotRead = null;
 	
 	/**
 	 * Constructor for the single instance.
 	 */
 	private OperationSitesAdministrator() {
+		readRawSites();
+	}
+
+
+	/**
+	 * Reads the operation sites from the CSV file.
+	 */
+	private void readRawSites() {
 		rawSites = new ArrayList<String[]>();
-		
+
 		try {
 			FileReader fileReader = new FileReader(OPERATION_SITES_DATA);
-			
+
 			CSVReaderBuilder builder = new CSVReaderBuilder(fileReader)
-			    .withCSVParser(new CSVParserBuilder().withSeparator(';').build())
-			    .withSkipLines(1);			
+					.withCSVParser(new CSVParserBuilder().withSeparator(';').build())
+					.withSkipLines(1);
 			CSVReader reader = builder.build();
-			
+
 			String[] nextLine;
 			while ((nextLine = reader.readNext()) != null) {
-				if (nextLine != null) {
-					rawSites.add(nextLine);
-				}
+				rawSites.add(nextLine);
 			}
+
+			reader.close();
 		} catch (CsvValidationException | IOException e) {
 			reasonDataNotRead = e.getMessage();
 		}
@@ -56,7 +64,7 @@ public class OperationSitesAdministrator {
 	
 	
 	/**
-	 * Downloads the newest possible CSV and saves it at {@link OPERATION_SITES_DATA}.
+	 * Downloads the newest possible CSV and saves it at {@link this.OPERATION_SITES_DATA}.
 	 */
 	private void downloadNewerData() {
 		boolean dataCheckNecessary = CallCounter.getInstance().counterDivisable();
@@ -66,6 +74,7 @@ public class OperationSitesAdministrator {
 		if (dataCheckNecessary) {
 			try { 
 				client.saveNewestCsv();
+				readRawSites();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} finally {
@@ -124,8 +133,12 @@ public class OperationSitesAdministrator {
 	public static OperationSitesAdministrator getInstance() {
 		return SINGLETON;
 	}
-	
-	
+
+
+	/**
+	 * Returns the all possible operation site codes.
+	 * @return The codes.
+	 */
 	public List<String> getOperationSiteCodes() {
 		List<String> codes = new ArrayList<String>();
 		rawSites.forEach(rawSite -> codes.add(rawSite[1]));

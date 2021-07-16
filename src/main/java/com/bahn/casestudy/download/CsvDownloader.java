@@ -18,7 +18,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlElement;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 /**
- * A client to download the most recent accessable CSV for the Betriebsstellen.
+ * A client to download the most recent accessible CSV for the Betriebsstellen.
  * @implNote The URLs do not get sorted after they got sorted by year.
  * This needs change but works as long as there are no two CSVs per year.
  */
@@ -31,10 +31,10 @@ public class CsvDownloader extends WebClient {
 	/** The path to which the new CSV gets saved. */
 	private final String SAVE_PATH = "./src/main/resources/static/operation-sites-data.csv";
 	
-	/** Exctract the year from a CSV name. */
+	/** Extract the year from a CSV name. */
 	private final Pattern YEAR_PATTERN = Pattern.compile("Stand(\\d{4})-");
 	/** Extract the month from a CSV name. */
-	// private final Pattern MONTH_PATTERN = Pattern.compile("-(\\d{2}).csv");
+	private final Pattern MONTH_PATTERN = Pattern.compile("-(\\d{2}).csv");
 	
 	/** The most recent year found in CSV names. */
 	private int youngestYear = 0;
